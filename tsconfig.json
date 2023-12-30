@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "allowJs": true,
     "noEmit": true,
     "declaration": true,
@@ -17,7 +21,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "paths": {
       "@/*": ["./*"]
     },

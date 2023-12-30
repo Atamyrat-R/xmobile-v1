@@ -4,6 +4,7 @@
     "build": "next build",
     "db:generate": "drizzle-kit generate:pg",
     "db:migrate": "tsx app/server/migrate.ts",
+    "db:seed": "tsx app/server/seed.ts",
     "dev": "next dev",
     "prepare": "husky install",
     "prettier": "prettier --write --ignore-unknown .",
