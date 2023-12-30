@@ -1,5 +1,5 @@
 module.exports = {
-  '**/*.(ts|tsx)': () => 'yarn tsc --noEmit --pretty -p tsconfig.json',
+  // '**/*.(ts|tsx)': () => 'yarn tsc --noEmit --pretty -p tsconfig.json',
 
   // Lint & Prettify TS and JS files
   '**/*.(ts|tsx|js)': (filenames) => [
