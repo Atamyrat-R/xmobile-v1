@@ -46,3 +46,9 @@ export const revenue = pgTable('revenue', {
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
+export type Customer = typeof customers.$inferSelect;
+export type NewCustomer = typeof customers.$inferInsert;
+export type Invoice = typeof invoices.$inferSelect;
+export type NewInvoice = typeof invoices.$inferInsert;
+export type Revenue = typeof revenue.$inferSelect;
+export type NewRevenue = typeof revenue.$inferInsert;
