@@ -14,7 +14,7 @@ import {
   getInvoices,
   getLatestInvoices,
   getRevenue,
-} from '@/app/server/apis';
+} from '@/app/server/apis/apis';
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.

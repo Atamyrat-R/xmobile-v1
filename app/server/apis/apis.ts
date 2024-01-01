@@ -1,21 +1,11 @@
-import { Customer, Invoice, Revenue } from '@/app/lib/definitions';
+import { Customer, Invoice, Revenue, User } from '@/app/lib/definitions';
+import { ITEMS_PER_PAGE, ResponseType } from '@/app/server/common';
 import { dbClient } from '@/app/server/dbClient';
-import {
-  NewUser,
-  User,
-  customers,
-  invoices,
-  revenue,
-  users,
-} from '@/app/server/schema';
+import { customers } from '@/app/server/schema/customer.schema';
+import { invoices } from '@/app/server/schema/invoice.schema';
+import { revenue } from '@/app/server/schema/revenue.schema';
+import { NewUser, users } from '@/app/server/schema/user.schema';
 import { count, desc, eq, ilike, or } from 'drizzle-orm';
-
-const ITEMS_PER_PAGE = 6;
-
-type ResponseType = {
-  success: boolean;
-  message?: string;
-};
 
 export async function createUser({
   email,
