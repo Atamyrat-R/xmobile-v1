@@ -1,10 +1,8 @@
 import { dbClient } from '@/app/server/dbClient';
-import {
-  invoices,
-  customers,
-  revenue,
-  users,
-} from '@/app/server/schema/schema';
+import { customers } from '@/app/server/schema/customer.schema';
+import { invoices } from '@/app/server/schema/invoice.schema';
+import { revenue } from '@/app/server/schema/revenue.schema';
+import { users } from '@/app/server/schema/user.schema';
 
 type CustomersType = {
   id: string;
