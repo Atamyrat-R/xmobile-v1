@@ -3,7 +3,11 @@ import { ITEMS_PER_PAGE, ResponseType } from '@/app/server/common';
 import { dbClient } from '@/app/server/dbClient';
 import { customers } from '@/app/server/schema/customer.schema';
 import { invoices } from '@/app/server/schema/invoice.schema';
-import { eq, desc, or, ilike } from 'drizzle-orm';
+import { eq, desc, or, ilike, count, sql } from 'drizzle-orm';
+import { Column, ColumnBaseConfig } from 'drizzle-orm/column';
+import { ColumnDataType } from 'drizzle-orm/column-builder';
+
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function getLatestInvoices(): Promise<
   (Partial<Invoice> & Partial<Customer>)[] | undefined
@@ -26,8 +30,10 @@ export async function getLatestInvoices(): Promise<
   }
 }
 
-export async function getInvoices(query: string, currentPage: number) {
+export async function getFilteredInvoices(query: string, currentPage: number) {
   const offset = (Number(currentPage) - 1) * ITEMS_PER_PAGE;
+
+  noStore();
 
   try {
     return await dbClient
@@ -46,9 +52,9 @@ export async function getInvoices(query: string, currentPage: number) {
         or(
           ilike(customers.name, `%${query}%`),
           ilike(customers.email, `%${query}%`),
-          // ilike(invoices.amount, `%${query}%`),
-          // ilike(invoices.date, `%${query}%`),
-          // ilike(invoices.status, `%${query}%`)
+          // sql`cast(invoices.amount as varchar) ilike '%%'`,
+          // sql`cast(invoices.date as varchar) ilike '%cast(${query} as varchar)%'`,
+          ilike(invoices.status, `%${query}%`),
         ),
       )
       .orderBy(desc(invoices.date))
@@ -56,5 +62,31 @@ export async function getInvoices(query: string, currentPage: number) {
       .offset(offset);
   } catch (error) {
     console.log((error as Error).message);
+  }
+}
+
+export async function getTotalInvoices(query: string) {
+  noStore();
+
+  try {
+    const number = await dbClient
+      .select({ count: count(invoices.id) })
+      .from(invoices)
+      .innerJoin(customers, eq(invoices.customer_id, customers.id))
+      .where(
+        or(
+          ilike(customers.name, `%${query}%`),
+          ilike(customers.email, `%${query}%`),
+          // ilike(invoices.amount, `%${query}%`),
+          // ilike(invoices.date, `%${query}%`),
+          ilike(invoices.status, `%${query}%`),
+        ),
+      );
+
+    const totalPages = Math.ceil(Number(number[0]!.count) / ITEMS_PER_PAGE); // PROBABLY THE ERROR IS FROM HERE
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of invoices.');
   }
 }
