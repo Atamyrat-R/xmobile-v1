@@ -3,10 +3,10 @@ import 'dotenv/config';
 
 export default defineConfig({
   schema: [
-    'app/server/user.schema.ts',
-    'app/server/revenue.schema.ts',
-    'app/server/invoice.schema.ts',
-    'app/server/customer.schema.ts',
+    'app/server/schema/user.schema.ts',
+    'app/server/schema/revenue.schema.ts',
+    'app/server/schema/invoice.schema.ts',
+    'app/server/schema/customer.schema.ts',
   ],
   out: './drizzle',
   verbose: true,
