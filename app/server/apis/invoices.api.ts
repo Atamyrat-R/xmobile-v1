@@ -33,6 +33,8 @@ export async function getLatestInvoices(): Promise<
 export async function getFilteredInvoices(query: string, currentPage: number) {
   const offset = (Number(currentPage) - 1) * ITEMS_PER_PAGE;
 
+  // console.log(query);
+
   noStore();
 
   try {

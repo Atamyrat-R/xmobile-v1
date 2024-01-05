@@ -12,6 +12,7 @@ export default async function InvoicesTable({
   currentPage: number;
 }) {
   const invoices = await getFilteredInvoices(query, currentPage);
+  // console.log(invoices);
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
