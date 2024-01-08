@@ -1,4 +1,4 @@
-import { dbClient } from '@/app/server/dbClient';
+import { dbClient } from '@/app/server/utils/dbClient';
 import { customers } from '@/app/server/schema/customer.schema';
 import { invoices } from '@/app/server/schema/invoice.schema';
 import { revenue } from '@/app/server/schema/revenue.schema';

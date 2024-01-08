@@ -1,6 +1,8 @@
+'use server';
+
 import { Invoice, Customer } from '@/app/lib/definitions';
-import { ITEMS_PER_PAGE, ResponseType } from '@/app/server/common';
-import { dbClient } from '@/app/server/dbClient';
+import { ITEMS_PER_PAGE, ResponseType } from '@/app/server/utils/common';
+import { dbClient } from '@/app/server/utils/dbClient';
 import { customers } from '@/app/server/schema/customer.schema';
 import { invoices } from '@/app/server/schema/invoice.schema';
 import { eq, desc, or, ilike, count, sql } from 'drizzle-orm';
@@ -90,5 +92,34 @@ export async function getTotalInvoices(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of invoices.');
+  }
+}
+
+export async function getCardData() {
+  try {
+    const numberOfInvoices = await dbClient
+      .select({ value: count() })
+      .from(invoices);
+    const numberOfCustomers = await dbClient
+      .select({ value: count() })
+      .from(customers);
+    const totalPaidInvoices = await dbClient
+      .select({ value: count() })
+      .from(invoices)
+      .where(eq(invoices.status, 'paid'));
+    const totalPendingInvoices = await dbClient
+      .select({ value: count() })
+      .from(invoices)
+      .where(eq(invoices.status, 'pending'));
+
+    return {
+      numberOfInvoices: numberOfInvoices[0]!.value,
+      numberOfCustomers: numberOfCustomers[0]!.value,
+      totalPaidInvoices: totalPaidInvoices[0]!.value,
+      totalPendingInvoices: totalPendingInvoices[0]!.value,
+    };
+  } catch (error) {
+    console.log((error as Error).message);
+    return {};
   }
 }

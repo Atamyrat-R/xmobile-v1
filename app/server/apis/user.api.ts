@@ -1,5 +1,7 @@
-import { ResponseType } from '@/app/server/common';
-import { dbClient } from '@/app/server/dbClient';
+'use server';
+
+import { ResponseType } from '@/app/server/utils/common';
+import { dbClient } from '@/app/server/utils/dbClient';
 import { NewUser, User, users } from '@/app/server/schema/user.schema';
 import { eq } from 'drizzle-orm';
 
